@@ -1,0 +1,244 @@
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+
+
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+
+
+<dom-module id="x-foo">  
+    
+    <template>
+     
+        
+
+    <style>
+      :host {
+        font-family: HelveticaNeueCyrLight, Helvetica, Arial, sans-serif;
+      }
+      #paper_progress {
+        width: 100%;
+        background-color: rgb(169, 252, 78);
+      }
+      #paper_toast {
+        position: fixed;
+        outline: none;
+        display: none;
+      }
+      #core_card {
+        width: 100%;
+        height: 100px;
+        background-color: #eaeaed;
+        transform-style: preserve-3d;
+      }
+      #core_card_block {
+        box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px, rgba(0, 0, 0, 0.0980392) 0px 0px 3px;
+        width: 99%;
+        height: 200px;
+        opacity: 0.9;
+        background-color: aqua;
+      }
+      #core_card_main {
+        width: 300px;
+        height: auto;
+        box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px, rgba(0, 0, 0, 0.0980392) 0px 0px 3px;
+        margin: auto;
+        background-color: rgba(225,225,225);
+      }
+      #core_card_main.red {
+        box-shadow: rgb(255, 0, 0) 0px 10px 80px, rgba(0, 0, 0, 0.0980392) 0px 0px 3px
+      }
+      #core_card_main.yellow {
+        box-shadow: rgb(255, 193, 7) 0px 10px 80px, rgba(0, 0, 0, 0.0980392) 0px 0px 3px
+      }
+      #core_card_main.green {
+        box-shadow: rgb(137, 191, 79) 0px 10px 80px, rgba(0, 0, 0, 0.0980392) 0px 0px 3px
+      }
+      .item {
+        width: 90%;
+        height: 45px;
+        margin: 5px;
+        padding: 5px;
+        opacity: 1;
+      }
+      .field {
+        width: 80%;
+        height: 35px;
+        position: relative; top:-43px; left: 30px;
+    
+      }
+      .field::shadow #decorator{
+        padding: 0px;
+      }
+      .logo{
+        width:70px;
+        height:70px;
+      }
+      .icon {
+        width: 25px;
+        height: 25px;
+        margin: auto;
+      }
+        
+        
+    
+        .click  {
+        position: relative; top: -25px; left: 10px;
+    
+      }
+    
+        .arrow  {
+        position: relative; top: 0px; left: -0px;
+        margin-bottom: 200px;
+    
+      }
+        
+        
+      paper-toggle-button {
+        margin-top: 15px;
+      }
+      paper-toggle-button::shadow [checked] .toggle {
+        background-color: rgb(137, 191, 79);
+      }
+      paper-toggle-button::shadow [checked] .toggle-ink {
+        color: rgb(137, 191, 79);
+      }
+      input::-webkit-input-placeholder,
+      .gray-text {
+        color: #999;
+      }
+      #arrow {
+        background-color: rgb(137, 191, 79);
+        display: block;
+        margin: -5px auto auto auto;
+      }
+      #remeber{
+        margin: auto 5px auto auto;
+      }
+      @media(max-width:450px){
+        #core_card_main{
+          position: absolute;
+          top: 0px;
+          bottom: 0px;
+          left: 0px;
+          margin: 0px;
+          width: 100%;
+          height: 100%;
+        }
+        #core_card_block{
+          margin-top:10%;
+          box-shadow: none;
+        }
+        #arrow {
+          display: block;
+          margin: 125px auto;
+          position: absolute;
+        }
+      }
+    
+    </style> 
+        
+      <!---  <iron-ajax id="ajaxhandler"></iron-ajax> --->
+        <paper-card id="core_card_main" vertical layout start-justified center>
+
+        
+            <paper-card class="item" horizontal layout wrap center-justified>
+                <iron-icon icon="account-circle" class="icon" id="user_icon" center-justified horizontal layout wrap center>                 </iron-icon>
+                <paper-input class="field" id="user_field" label="Username or email address">
+                    <input id="user_input" is="core-input" name="user" value="{{user}}">
+                </paper-input>
+                
+            </paper-card>
+            
+            <paper-card class="item" horizontal layout wrap center-justified>
+                <iron-icon icon="lock" class="icon" id="password_icon" center-justified horizontal layout wrap center>                       </iron-icon>
+                <paper-input class="field" id="password_field" label="Enter your password">
+                    <input id="password_input" is="core-input" name="password" type="password" value="{{password}}"/>
+                </paper-input>
+            </paper-card>
+            
+            
+            
+            <paper-card class="item" horizontal layout>
+                <paper-checkbox checked> </paper-checkbox>
+                <paper-item class="click">Remember me</paper-item>
+            </paper-card>
+       
+            <paper-fab class="arrow" id="arrow" icon="arrow-forward" title="submit" on-click="{{logged}}" ></paper-fab>
+
+        </paper-card>
+        
+  </template>
+
+    <script>
+      Polymer({
+          is: 'x-foo'})();
+    </script> 
+   <!-- //<!--
+    //Polymer('login-page', {
+      //ready: function(){
+        //this.addEventListener('blur', this.check);
+        //his.addEventListener('keydown', this.keydown);
+      //},
+      //mailcheck: function(){
+        //var string = arguments[0];
+        //if (string.match(/[\w-\.]{3,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/) !== null) {
+         // return true;
+        //}else{
+        //  return false;
+        //}
+      //},
+      //passcheck: function(){
+        //var string = arguments[0];
+        //if (string.match(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{6,16})$/) !== null) {
+          //return true;
+        //} else {
+          //return false;
+        //}
+      //},
+      //check: function(){
+        //if (this.$.user_input.value === "" || this.$.password_input.value === "") {
+          //this.$.core_card_main.className="yellow";
+        //} else if (this.mailcheck(this.$.user_input.value) && this.passcheck(this.$.password_input.value)){
+          //this.$.core_card_main.className="green";
+        //} else {
+          //this.$.core_card_main.className="red";
+        //}
+      //},
+      //logged: function() {
+        //var ajaxhandler = this.$.ajaxhandler;
+        //var rememberMe = this.$.remember.checked;
+        //var aux = this.$.user_input.value;
+        //var datos={
+          //password: this.$.password_input.value,
+        //}
+        /* Los paper-toggle-button funcionan como los checkbox, de forma que
+         * se puede alternar que esté o no esté el atributo checked */
+        //if (rememberMe) {
+         // console.log('The "remember me" button is checked');
+        //}
+        //if (aux.match(/@/) !== null) {
+          //datos.email= aux;
+          //datos.type="email";
+          //this.fire('login', datos);
+        //} else {
+          //datos.username= aux;
+          //datos.type="name";
+          //this.fire('login', datos);
+    //    }
+    //  },
+    //  keydown: function(event, detail, sender) {
+    //    if(event.keyCode === 13) {
+    //      this.check();
+    //    }
+    //  }
+    //});
+        //-->           
+  
+</dom-module>
